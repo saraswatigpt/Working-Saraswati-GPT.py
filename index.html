@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SaraswatiGPT 🔊🖼️</title>
+    <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+</head>
+<body>
+    <h1>SaraswatiGPT 🔊🖼️</h1>
+    <form method="post">
+        <label>Ask a Question (or click mic):</label><br>
+        <input type="text" name="question" id="question" required style="width:300px;">
+        <button type="button" onclick="startListening()">🎤</button><br><br>
+
+        <label>Generate Image for Prompt:</label><br>
+        <input type="text" name="image_prompt" placeholder="e.g. A dragon flying over moon"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <hr>
+    <h2>History</h2>
+    {% for q, a, ip, img in history %}
+        <p><b>You:</b> {{ q }}</p>
+        <p><b>Bot:</b> {{ a }}</p>
+        {% if ip %}
+            <p><b>Image Prompt:</b> {{ ip }}</p>
+            {% if img %}
+                <img src="{{ img }}" width="200"><br>
+            {% endif %}
+        {% endif %}
+        <hr>
+    {% endfor %}
+    <a href="{{ url_for('reset') }}">Reset</a>
+</body>
+</html>
