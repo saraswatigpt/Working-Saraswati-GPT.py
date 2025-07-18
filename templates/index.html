@@ -1,207 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SaraswatiGPT - Chatbot</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts for modern look -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: #141833;
-      font-family: 'Inter', Arial, sans-serif;
-      color: #fff;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .center {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .chatbox {
-      background: rgba(26, 30, 60, 0.98);
-      border-radius: 24px;
-      box-shadow: 0 8px 32px #080a181e;
-      padding: 36px 30px 18px 30px;
-      width: 100%;
-      max-width: 420px;
-      min-width: 320px;
-      margin: 48px auto;
-    }
-    .chat-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 8px;
-    }
-    .robot-icon {
-      width: 52px;
-      height: 52px;
-      background: #1e2349;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      margin-right: 2px;
-    }
-    .chat-title {
-      font-size: 2.2rem;
-      font-weight: bold;
-      color: #fff;
-      letter-spacing: 0.5px;
-      line-height: 1;
-    }
-    .subtitle {
-      color: #8da2fb;
-      font-size: 1rem;
-      font-weight: 400;
-      margin-bottom: 12px;
-      margin-left: 3px;
-      letter-spacing: .3px;
-    }
-    .bubble-group { margin: 18px 0 0 0; }
-    .bubble {
-      display: flex;
-      align-items: flex-end;
-      margin-bottom: 13px;
-    }
-    .bubble.user {
-      justify-content: flex-start;
-      flex-direction: row-reverse;
-    }
-    .bubble.ai {
-      justify-content: flex-start;
-    }
-    .bubble-icon {
-      margin: 0 8px;
-      width: 35px; height: 35px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: #1f2150;
-    }
-    .bubble-msg {
-      max-width: 73vw;
-      background: #2d3265;
-      color: #fff;
-      font-size: 1.08rem;
-      padding: 12px 17px;
-      border-radius: 16px 16px 4px 16px;
-      box-shadow: 0 2px 12px #23255b30;
-      line-height: 1.45;
-      word-break: break-word;
-      min-width: 64px;
-    }
-    .bubble.user .bubble-msg {
-      background: #594ad9;
-      color: #fff;
-      border-radius: 16px 16px 16px 4px;
-      text-align: right;
-    }
-    .chat-form-area {
-      display: flex;
-      gap: 8px;
-      margin-top: 18px;
-    }
-    input[type="text"] {
-      flex: 1;
-      padding: 13px;
-      border-radius: 12px;
-      background: #181b39;
-      border: none;
-      color: #fff;
-      font-size: 1.08rem;
-      outline: none;
-      transition: box-shadow .15s;
-    }
-    input[type="text"]::placeholder {
-      color: #a6acd5;
-      opacity: 0.85;
-    }
-    button[type="submit"], .send-btn {
-      background: linear-gradient(90deg, #4f8aff 40%, #5a43ff 100%);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 0 32px;
-      height: 44px;
-      font-size: 1.07rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background .2s;
-      box-shadow: 0 3px 18px #1b2b6820;
-    }
-    button[type="submit"]:hover, .send-btn:hover {
-      background: linear-gradient(90deg, #5a43ff 10%, #4f8aff 100%);
-    }
-    .clear-link {
-      display: block;
-      color: #7db3fa;
-      margin: 14px auto 2px auto;
-      text-align: left;
-      font-size: 1.03rem;
-      text-decoration: none;
-      cursor: pointer;
-      transition: color .18s;
-    }
-    .clear-link:hover { color: #fff; text-decoration: underline; }
-    .footer {
-      text-align: center;
-      margin-top: 22px;
-      font-size: .95rem;
-      color: #6d74a6;
-      user-select: none;
-      opacity: 0.90;
-      letter-spacing: 0.2px;
-    }
-    @media (max-width: 600px) {
-      .chatbox { max-width: 97vw; min-width: unset; padding: 22px 3vw 10px 3vw;}
-      .chat-title { font-size: 1.38rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>SaraswatiGPT - Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #18192b;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .container {
+            background: #23233b;
+            border-radius: 22px;
+            box-shadow: 0 0 32px #15154155;
+            max-width: 410px;
+            width: 96vw;
+            margin: 44px auto;
+            padding: 34px 24px 18px 24px;
+        }
+        .logo-row {
+            display: flex; align-items: center; gap: 14px; justify-content: center;
+            margin-bottom: 5px;
+        }
+        .logo-row img {
+            width: 44px; height: 44px;
+        }
+        h1 {
+            color: #fff;
+            font-size: 2.1rem;
+            margin: 0 0 5px 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .desc {
+            color: #a9bbff;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            line-height: 1.35;
+            letter-spacing: .02em;
+        }
+        .chat-history {
+            min-height: 120px;
+            max-height: 310px;
+            overflow-y: auto;
+            margin-bottom: 14px;
+        }
+        .msg {
+            display: flex; align-items: flex-end; margin-bottom: 12px;
+        }
+        .user { justify-content: flex-end; }
+        .user .bubble {
+            background: linear-gradient(90deg, #5359e9, #848bfc 80%);
+            color: #fff;
+            margin-left: 10px;
+            border-radius: 17px 17px 4px 17px;
+            box-shadow: 0 1px 7px #35377a33;
+        }
+        .ai { justify-content: flex-start; }
+        .ai .bubble {
+            background: #23233b;
+            color: #bee3fc;
+            margin-right: 10px;
+            border-radius: 17px 17px 17px 4px;
+            box-shadow: 0 1px 7px #11112d44;
+        }
+        .bubble {
+            padding: 12px 16px;
+            max-width: 70%;
+            font-size: 1.01rem;
+            word-break: break-word;
+            line-height: 1.4;
+            position: relative;
+        }
+        .chat-form-row {
+            display: flex; gap: 8px; margin-bottom: 0;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 13px 14px;
+            border-radius: 8px;
+            border: 1px solid #30325a;
+            background: #18192b;
+            color: #e7e7f7;
+            font-size: 1rem;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #6c7bfa, #5466e5 80%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0 28px;
+            font-size: 1.07rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        button:hover { background: #3b3beb; }
+        .clear-link {
+            display: block;
+            text-align: left;
+            color: #73a7ff;
+            text-decoration: underline;
+            margin: 13px 0 0 2px;
+            font-size: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.98rem;
+            color: #6673be;
+            margin-top: 23px;
+            letter-spacing: 0.03em;
+            user-select: none;
+        }
+        @media (max-width: 520px) {
+            .container { max-width: 99vw; padding: 10vw 2vw 7vw 2vw; }
+            h1 { font-size: 1.4rem; }
+        }
+    </style>
 </head>
 <body>
-  <div class="center">
-    <div class="chatbox">
-      <div class="chat-header">
-        <div class="robot-icon">🤖</div>
-        <div>
-          <div class="chat-title">SaraswatiGPT</div>
-          <div class="subtitle">
-            Made By Saraswati Technologies Ltd.<br>
-            By Shaurya Wadekar <span style="font-size:.85em;">™️ &copy; 2025</span>
-          </div>
+    <div class="container">
+        <div class="logo-row">
+            <img src="https://img.icons8.com/color/96/bot.png" alt="Bot"/>
+            <h1>SaraswatiGPT</h1>
         </div>
-      </div>
-      <div class="bubble-group" id="chat-history">
-        {% for item in history %}
-          {% if item.type == 'user' %}
-            <div class="bubble user">
-              <div class="bubble-msg">{{ item.msg }}</div>
-              <div class="bubble-icon" title="User">👤</div>
-            </div>
-          {% else %}
-            <div class="bubble ai">
-              <div class="bubble-icon" title="SaraswatiGPT">🤖</div>
-              <div class="bubble-msg">{{ item.msg|safe }}</div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <form class="chat-form-area" method="post" autocomplete="off">
-        <input type="text" name="question" placeholder="Type your message..." required autofocus>
-        <button type="submit" class="send-btn">Send</button>
-      </form>
-      <a class="clear-link" href="{{ url_for('reset') }}">Clear chat</a>
+        <div class="desc">
+            Made By Saraswati Technologies Ltd.<br>
+            By Shaurya Wadekar <sup>™</sup> © 2025
+        </div>
+        <div class="chat-history">
+            {% for q, a in history %}
+                <div class="msg user">
+                    <div class="bubble"><b>🙋‍♂️</b> {{ q }}</div>
+                </div>
+                <div class="msg ai">
+                    <div class="bubble">
+                        <img src="https://img.icons8.com/color/48/bot.png" style="width:1.2em;vertical-align:middle;"> {{ a }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <form method="post" autocomplete="off" class="chat-form-row">
+            <input type="text" name="question" placeholder="Type your message..." required autofocus>
+            <button type="submit">Send</button>
+        </form>
+        <form method="get" action="{{ url_for('reset') }}">
+            <button class="clear-link" type="submit">Clear chat</button>
+        </form>
+        <div class="footer">
+            SaraswatiGPT &copy; 2025 — All rights reserved.<br>
+            <span style="font-size:0.93em;opacity:.75">Trademark & copyright owned by Shaurya Wadekar</span>
+        </div>
     </div>
-  </div>
-  <div class="footer">
-    SaraswatiGPT is a trademark of Saraswati Technologies Ltd.<br>
-    &copy; 2025 Shaurya Wadekar. All Rights Reserved.
-  </div>
 </body>
 </html>
