@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SaraswatiGPT</title>
+    <title>SaraswatiGPT</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .chat { max-width: 600px; margin: 0 auto; }
+        .msg { margin-bottom: 15px; }
+        .user { font-weight: bold; }
+        .ai { color: #0b8fa9; margin-left: 15px; }
+        form { margin-top: 25px; }
+        input[type="text"] { width: 80%; padding: 8px; }
+        button { padding: 8px 18px; }
+    </style>
 </head>
 <body>
-  <h1>SaraswatiGPT is Working!</h1>
+    <div class="chat">
+        <h2>🤖 SaraswatiGPT</h2>
+        <form method="POST">
+            <input type="text" name="question" placeholder="Type your question..." required autocomplete="off"/>
+            <button type="submit">Ask</button>
+            <a href="/reset" style="margin-left:10px;">Clear</a>
+        </form>
+        <hr/>
+        {% for q, a in history %}
+            <div class="msg">
+                <span class="user">You:</span> {{ q }}<br/>
+                <span class="ai">SaraswatiGPT:</span> {{ a }}
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
