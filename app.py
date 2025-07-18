@@ -1,46 +1,27 @@
-from flask import Flask, render_template, request, session, redirect, url_for
-import openai
+from flask import Flask, render_template, request
+import google.generativeai as genai
 import os
 
-# Securely get API key from environment variable
-openai.api_key = os.environ.get("OPENAI_API_KEY")
-
 app = Flask(__name__)
-app.secret_key = "random-strong-key-1234"
+
+# Gemini API KEY ko env variable se le, ya direct yahan likh de (for demo only)
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YAHAN_APNI_API_KEY_DAL")
+
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel("gemini-1.5-flash")  # Ya gemini-pro, as per your key
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    if "history" not in session:
-        session["history"] = []
     answer = ""
-    question = ""
     if request.method == "POST":
         question = request.form.get("question", "")
-        if question.strip():
+        if question:
             try:
-                response = openai.chat.completions.create(
-                    model="gpt-4o",   # GPT-4o model
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": question},
-                    ],
-                    max_tokens=150,
-                    temperature=0.7,
-                )
-                answer = response.choices[0].message.content.strip()
+                response = model.generate_content(question)
+                answer = response.text
             except Exception as e:
-                answer = f"Error: {str(e)}"
-        else:
-            answer = "Please enter a question."
-        session["history"].append((question, answer))
-        session.modified = True
-        return redirect(url_for("home"))
-    return render_template("index.html", history=session["history"])
-
-@app.route("/reset")
-def reset():
-    session["history"] = []
-    return redirect(url_for("home"))
+                answer = f"Error: {e}"
+    return render_template("index.html", answer=answer)
 
 if __name__ == "__main__":
     app.run(debug=True)
