@@ -1,31 +1,438 @@
-<div style="width: 1280px; height: 832px; position: relative; background: white; overflow: hidden; border-radius: 32px">
-  <div style="width: 280px; height: 280px; left: 622px; top: 501px; position: absolute; background: #89BCFF; box-shadow: 300px 300px 300px; border-radius: 9999px; filter: blur(150px)"></div>
-  <div style="width: 414px; height: 414px; left: 358px; top: 551px; position: absolute; background: #FF86E1; box-shadow: 500px 500px 500px; border-radius: 9999px; filter: blur(250px)"></div>
-  <div style="width: 409px; left: 435px; top: 164.09px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: center; gap: 48px; display: inline-flex">
-    <div style="width: 21px; height: 21px; background: #160211"></div>
-    <div style="width: 21px; height: 21px; background: #160211"></div>
-    <div style="width: 21px; height: 21px; background: #160211"></div>
-    <div style="align-self: stretch; text-align: center; color: #160211; font-size: 24px; font-family: Manrope; font-weight: 400; word-wrap: break-word">Ask our AI anything</div>
-  </div>
-  <div style="padding: 10px; left: 222px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-    <div style="width: 274px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">What can I ask you to do?</div>
-  </div>
-  <div style="width: 883px; padding: 10px; left: 222px; top: 739px; position: absolute; background: white; border-radius: 8px; outline: 1px rgba(22, 2, 17, 0.30) solid; outline-offset: -1px; justify-content: space-between; align-items: center; display: inline-flex">
-    <div style="width: 274px; color: #56637E; font-size: 14px; font-family: Manrope; font-weight: 400; word-wrap: break-word">Ask me anything about your projects</div>
-    <div style="width: 36px; height: 36px; position: relative; overflow: hidden">
-      <div style="width: 34.90px; height: 34.89px; left: 0.31px; top: 0.56px; position: absolute; background: rgba(69.31, 98.13, 135.82, 0.50)"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SaraswatiGPT - Minimal Modern Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      font-family: 'Manrope', 'DM Sans', Arial, sans-serif;
+      background: radial-gradient(ellipse at 50% 65%, #fce7ff 0%, #cae6ff 100%);
+      color: #140c18;
+      transition: background 0.6s;
+    }
+    .main-container {
+      max-width: 900px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-bottom: 34px;
+      position: relative;
+    }
+    /* Hamburger */
+    .hamburger {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      width: 38px;
+      height: 38px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 26px; height: 5px;
+      background: #12063a;
+      border-radius: 4px;
+      display: block;
+      transition: all .3s;
+    }
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0; left: -300px;
+      height: 100vh;
+      width: 270px;
+      background: rgba(255,255,255,0.93);
+      box-shadow: 6px 0 30px #8c8cff15;
+      border-radius: 0 26px 26px 0;
+      padding: 34px 18px 18px 20px;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      transition: left 0.27s cubic-bezier(.67,.13,.65,1.36);
+      gap: 24px;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar .logo {
+      font-size: 1.3em;
+      color: #8856ea;
+      font-weight: bold;
+      letter-spacing: 1.3px;
+      margin-bottom: 12px;
+      font-family: 'Poppins', 'Manrope', Arial, sans-serif;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .sidebar .section-title {
+      font-weight: 600; color: #7868df; margin: 12px 0 5px 0; font-size: 1.06em;
+    }
+    .sidebar ul { list-style: none; margin: 0; padding: 0; }
+    .sidebar ul li {
+      padding: 8px 7px; border-radius: 8px; margin-bottom: 4px;
+      color: #262154; font-size: 1em;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; transition: background .13s, color .11s;
+    }
+    .sidebar ul li.active, .sidebar ul li:hover {
+      background: #e8eaff;
+      color: #8856ea;
+    }
+    .sidebar .logout {
+      color: #ff5f7e;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.08em;
+      margin-top: 22px;
+    }
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(70,52,97,0.09);
+      z-index: 100;
+      display: none;
+    }
+    .overlay.active { display: block; }
+    /* Dots */
+    .three-dots {
+      margin-top: 80px;
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      min-height: 112px;
+    }
+    .dot {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      background: #1e1522;
+      opacity: 0.83;
+    }
+    /* Heading */
+    .heading-main {
+      text-align: center;
+      font-size: 1.54em;
+      font-weight: 600;
+      color: #211126;
+      margin-bottom: 22px;
+      letter-spacing: 1.1px;
+      font-family: 'Manrope', 'DM Sans', Arial, sans-serif;
+    }
+    /* Suggestions */
+    .suggestions-title {
+      color: #6e44c6;
+      font-size: 1.02em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      letter-spacing: 0.2px;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: flex-start;
+      margin-bottom: 13px;
+      margin-left: 5px;
+    }
+    .suggestion {
+      background: #fff5fa;
+      color: #2d2453;
+      padding: 10px 18px;
+      border-radius: 7px;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 1px 8px #cc99e011;
+      transition: background .16s;
+      border: none;
+    }
+    .suggestion:hover { background: #f8deff; }
+    /* Chat */
+    .chat-area {
+      width: 98%;
+      max-width: 670px;
+      background: rgba(255,255,255,0.81);
+      border-radius: 18px;
+      box-shadow: 0 2px 20px 0 rgba(22,2,17,0.10);
+      min-height: 190px;
+      max-height: 245px;
+      overflow-y: auto;
+      padding: 22px 15px 13px 15px;
+      margin-bottom: 17px;
+      font-size: 1.06em;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .msg { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 3px; }
+    .msg.user { justify-content: flex-end; text-align: right; }
+    .msg.bot { justify-content: flex-start; text-align: left; }
+    .bubble {
+      max-width: 80vw;
+      padding: 12px 18px;
+      border-radius: 16px 16px 7px 16px;
+      background: linear-gradient(95deg, #ebe7fe 45%, #fff2fc 100%);
+      color: #251a33;
+      font-weight: 500;
+      box-shadow: 0 1.5px 8px #0001;
+      font-size: 1.02em;
+      word-break: break-word;
+    }
+    .msg.user .bubble {
+      background: linear-gradient(92deg, #d6bafe 0%, #e0eaff 95%);
+      color: #251a33;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 13px;
+    }
+    .msg.bot .bubble {
+      background: linear-gradient(95deg, #ffeaf6 0%, #f1f7ff 85%);
+      color: #5e356c;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 13px;
+    }
+    .bubble i { margin-right: 6px; color: #8a9cff; }
+    /* Input */
+    .input-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 13px;
+      box-shadow: 0 1.5px 9px #e2c7fc2c;
+      max-width: 700px;
+      width: 99vw;
+      position: fixed;
+      left: 0; right: 0; bottom: 22px;
+      z-index: 30;
+    }
+    .input-bar input[type="text"] {
+      flex: 1;
+      border: none;
+      padding: 12px 15px;
+      border-radius: 7px;
+      background: #f3f6ff;
+      color: #181a20;
+      font-size: 1.09em;
+      outline: none;
+      font-family: 'Manrope', Arial, sans-serif;
+      font-weight: 500;
+      transition: box-shadow .16s;
+    }
+    .input-bar input[type="text"]:focus { box-shadow: 0 2px 8px #bba8fc2a; }
+    .input-bar button, .input-bar .icon-btn {
+      background: #be8fff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 13px;
+      font-size: 1.09em;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background .17s, color .13s;
+    }
+    .input-bar .icon-btn {
+      padding: 10px 10px;
+      font-size: 1.14em;
+      background: #ebe2ff;
+      color: #8c49d6;
+    }
+    .input-bar .icon-btn:hover { background: #be8fff; color: #fff; }
+    .input-bar button:hover { background: #985eff; }
+    @media (max-width: 700px) {
+      .main-container { padding: 0 0 70px 0; }
+      .chat-area, .input-bar { max-width: 98vw; }
+      .sidebar { width: 89vw; }
+    }
+    @media (max-width: 430px) {
+      .main-container { padding: 0 0 110px 0; }
+      .chat-area, .input-bar { max-width: 99vw; }
+      .sidebar { width: 97vw; }
+      .hamburger { left: 9px; }
+      .input-bar { padding: 7px 5px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="overlay" id="overlay"></div>
+  <nav class="sidebar" id="sidebarNav">
+    <div class="logo"><i class="fas fa-robot"></i> SaraswatiGPT</div>
+    <div class="section-title">Plans</div>
+    <ul>
+      <li class="active"><i class="fas fa-star"></i> Free (Gemini 1.0)</li>
+      <li><i class="fas fa-bolt"></i> Superfast (1.5 Flash)</li>
+      <li><i class="fas fa-search"></i> Deep Research (1.5 Pro)</li>
+      <li><i class="fas fa-crown"></i> Expert (All Models)</li>
+    </ul>
+    <div class="section-title">Menu</div>
+    <ul>
+      <li><i class="fas fa-history"></i> Chat History</li>
+      <li><i class="fas fa-cloud-sun"></i> Weather</li>
+      <li><i class="fas fa-sliders-h"></i> Settings</li>
+    </ul>
+    <div class="logout">
+      <i class="fas fa-sign-out-alt"></i> Logout
     </div>
+  </nav>
+  <div class="main-container">
+    <!-- Dots -->
+    <div class="three-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="heading-main">Ask our AI anything</div>
+    <div style="width:100%;max-width:700px;">
+      <div class="suggestions-title">Suggestions on what to ask Our AI</div>
+      <div class="suggestions" id="suggestionsBox">
+        <button class="suggestion">What can I ask you to do?</button>
+        <button class="suggestion">Which one of my projects is performing the best?</button>
+        <button class="suggestion">What projects should I be concerned about right now?</button>
+      </div>
+    </div>
+    <!-- Chat Area -->
+    <div class="chat-area" id="chatArea"></div>
   </div>
-  <div style="padding: 10px; left: 530px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-    <div style="width: 274px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">Which one of my projects is performing the best?</div>
-  </div>
-  <div style="height: 56px; padding: 10px; left: 838px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-    <div style="width: 247px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">What projects should I be concerned about right now?</div>
-  </div>
-  <div style="left: 232px; top: 610px; position: absolute; color: #56637E; font-size: 14px; font-family: Manrope; font-weight: 700; word-wrap: break-word">Suggestions on what to ask Our AI</div>
-</div>
-<div style="width: 36px; height: 37.83px; position: relative">
-  <div style="width: 21px; height: 21px; left: 0px; top: 16.83px; position: absolute; background: #160211"></div>
-  <div style="width: 21px; height: 21px; left: 15px; top: 7.91px; position: absolute; background: #160211"></div>
-  <div style="width: 21px; height: 21px; left: 0px; top: 0px; position: absolute; background: #160211"></div>
-</div>
+  <!-- Input Bar -->
+  <form class="input-bar" id="chatForm" autocomplete="off">
+    <button class="icon-btn" type="button" id="picBtn" title="Add Picture">
+      <i class="fas fa-image"></i>
+    </button>
+    <input type="text" id="userInput" placeholder="Ask me anything about your projects" required />
+    <button class="icon-btn" type="button" id="micBtn" title="Voice Command">
+      <i class="fas fa-microphone"></i>
+    </button>
+    <button type="submit">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </form>
+  <script>
+    // Sidebar + Hamburger
+    const sidebar = document.getElementById("sidebarNav");
+    const hamburger = document.getElementById("hamburgerBtn");
+    const overlay = document.getElementById("overlay");
+    hamburger.onclick = function(e) {
+      sidebar.classList.add("open");
+      overlay.classList.add("active");
+      e.stopPropagation();
+    };
+    overlay.onclick = closeSidebar;
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("active");
+    }
+    document.addEventListener("click", function(e){
+      if(sidebar.classList.contains("open") && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+        closeSidebar();
+      }
+    });
+    // SUGGESTIONS click
+    document.querySelectorAll('.suggestion').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('userInput').value = btn.textContent;
+        document.getElementById('userInput').focus();
+      };
+    });
+    // Chat
+    let chatArea = document.getElementById("chatArea");
+    let chatForm = document.getElementById("chatForm");
+    let userInput = document.getElementById("userInput");
+    let history = JSON.parse(localStorage.getItem("saraswati_chat") || "[]");
+    function renderHistory() {
+      chatArea.innerHTML = "";
+      for (let { role, text } of history) {
+        chatArea.innerHTML += `
+          <div class="msg ${role}">
+            <div class="bubble">
+              <i class="fas fa-${role === "user" ? "user" : "robot"}"></i> ${text}
+            </div>
+          </div>`;
+      }
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+    renderHistory();
+    // Demo AI
+    function aiReply(q) {
+      let lq = q.toLowerCase();
+      if (lq.includes("name")) return "I'm SaraswatiGPT, your personal AI assistant!";
+      if (lq.includes("plan")) return "Upgrade plans anytime using the main menu.";
+      if (lq.includes("weather")) return "Weather is available for premium users!";
+      if (lq.includes("voice")) return "Tap mic icon for voice command!";
+      if (lq.includes("hi")||lq.includes("hello")) return "Hello! How can I help you?";
+      return "🤖 This is a demo. Connect me to your backend for real answers!";
+    }
+    chatForm.onsubmit = function(e) {
+      e.preventDefault();
+      let text = userInput.value.trim();
+      if (!text) return;
+      history.push({ role: "user", text });
+      renderHistory();
+      userInput.value = "";
+      setTimeout(() => {
+        let reply = aiReply(text);
+        history.push({ role: "bot", text: reply });
+        localStorage.setItem("saraswati_chat", JSON.stringify(history));
+        renderHistory();
+      }, 700);
+      localStorage.setItem("saraswati_chat", JSON.stringify(history));
+    };
+    // Voice
+    let micBtn = document.getElementById("micBtn");
+    let recognizing = false, recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.onstart = () => {
+        recognizing = true;
+        micBtn.style.background = "#eec0ff";
+      };
+      recognition.onend = () => {
+        recognizing = false;
+        micBtn.style.background = "#ebe2ff";
+      };
+      recognition.onresult = event => {
+        let transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+      };
+      micBtn.onclick = function() {
+        if (!recognizing) recognition.start();
+        else recognition.stop();
+      }
+    } else {
+      micBtn.onclick = () => alert("Voice command not supported in your browser.");
+    }
+    // Chat history stays
+    window.onload = () => renderHistory();
+    // Add Picture (demo)
+    document.getElementById("picBtn").onclick = () =>
+      alert("Picture upload coming soon!");
+  </
