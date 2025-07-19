@@ -3,9 +3,9 @@ import os
 import google.generativeai as genai
 
 app = Flask(__name__)
-app.secret_key = "supersecret"  # Change in production
+app.secret_key = "supersecret"  # Change this in production
 
-# Gemini API Key (store as env var in Render/Cloud)
+# Gemini API Key (set in Render/Cloud env variable)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
