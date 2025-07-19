@@ -1,252 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>SaraswatiGPT - Chatbot</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts: Poppins & Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome CDN for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      margin: 0;
-      background: #181a20;
-      color: #f3f3fa;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .container {
-      display: flex;
-      height: 100vh;
-    }
-    .sidebar {
-      width: 240px;
-      background: #22242c;
-      display: flex;
-      flex-direction: column;
-      padding: 32px 20px 20px 20px;
-      gap: 30px;
-      border-radius: 0 16px 16px 0;
-      box-shadow: 2px 0 8px #0002;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .sidebar h2 {
-      font-size: 1.3em;
-      color: #8b93ff;
-      margin-bottom: 18px;
-      font-weight: 600;
-      font-family: 'Poppins', 'Inter', Arial, sans-serif;
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
-    .sidebar ul li {
-      cursor: pointer;
-      font-size: 1.05em;
-      padding-left: 10px;
-      transition: color .2s;
-      color: #e7e7fb;
-      font-weight: 500;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .sidebar ul li:hover { color: #8b93ff; }
-    .logout {
-      margin-top: 16px;
-      color: #ff5f7e;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.08em;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .chat-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px 0;
-    }
-    .chat-header {
-      margin-top: 12px;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    .chat-header h1 {
-      font-size: 2.25em;
-      margin: 0;
-      color: #8b93ff;
-      letter-spacing: 1.2px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      font-family: 'Poppins', Arial, sans-serif;
-      font-weight: 700;
-    }
-    .chat-header p {
-      margin: 0;
-      font-size: 1em;
-      color: #b4b9dd;
-      margin-top: 5px;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .chat-area {
-      width: 98%;
-      max-width: 680px;
-      background: #23263a;
-      flex: 1;
-      margin: 0 auto;
-      border-radius: 14px;
-      box-shadow: 0 6px 22px #0003;
-      padding: 20px 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      overflow-y: auto;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .msg {
-      display: flex;
-      margin-bottom: 10px;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .msg.user { justify-content: flex-end; }
-    .msg.bot { justify-content: flex-start; }
-    .bubble {
-      max-width: 68%;
-      padding: 12px 18px;
-      border-radius: 18px;
-      font-size: 1.07em;
-      background: #4347b8;
-      color: #fff;
-      margin: 3px 0;
-      box-shadow: 0 1px 5px #0003;
-      position: relative;
-      word-break: break-word;
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-    }
-    .msg.user .bubble {
-      background: #8b93ff;
-      color: #181a20;
-      border-bottom-right-radius: 5px;
-      margin-left: 28%;
-    }
-    .msg.bot .bubble {
-      background: #35386b;
-      color: #fff;
-      border-bottom-left-radius: 5px;
-      margin-right: 28%;
-    }
-    .bubble i { font-size: 1.13em; }
-    /* Input bar */
-    .input-bar {
-      width: 98%;
-      max-width: 680px;
-      background: #22242c;
-      padding: 13px 18px;
-      border-radius: 10px;
-      display: flex;
-      gap: 13px;
-      align-items: center;
-      margin: 17px auto 0 auto;
-      box-shadow: 0 2px 7px #0002;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .input-bar input[type="text"] {
-      flex: 1;
-      padding: 10px 15px;
-      border-radius: 7px;
-      border: none;
-      background: #2e3145;
-      color: #e9e9ff;
-      font-size: 1.07em;
-      outline: none;
-      margin-right: 8px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-    }
-    .input-bar button, .input-bar .icon-btn {
-      background: #8b93ff;
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      padding: 9px 18px;
-      font-size: 1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background .18s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .input-bar .icon-btn {
-      padding: 9px 12px;
-      font-size: 1.22em;
-      background: #31345d;
-      border-radius: 7px;
-      color: #8b93ff;
-      transition: background .2s, color .2s;
-    }
-    .input-bar .icon-btn:hover {
-      background: #8b93ff;
-      color: #fff;
-    }
-    .input-bar button:hover {
-      background: #5c63ca;
-    }
-    @media (max-width: 900px) {
-      .container { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; padding: 10px; gap: 8px;}
-      .chat-main { padding: 6px 0; }
-    }
-    @media (max-width: 600px) {
-      .chat-area, .input-bar { max-width: 99vw; padding: 8px 5px; }
-      .sidebar { display: none; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <ul>
-        <li><i class="fas fa-list"></i> Plans</li>
-        <li><i class="fas fa-cog"></i> Manage your plans</li>
-        <li><i class="fas fa-plus"></i> Add project</li>
-        <li><i class="fas fa-eye"></i> See active plan</li>
-        <li><i class="fas fa-user-cog"></i> Manage your account</li>
-      </ul>
-      <div class="logout">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </div>
+<div style="width: 1280px; height: 832px; position: relative; background: white; overflow: hidden; border-radius: 32px">
+  <div style="width: 280px; height: 280px; left: 622px; top: 501px; position: absolute; background: #89BCFF; box-shadow: 300px 300px 300px; border-radius: 9999px; filter: blur(150px)"></div>
+  <div style="width: 414px; height: 414px; left: 358px; top: 551px; position: absolute; background: #FF86E1; box-shadow: 500px 500px 500px; border-radius: 9999px; filter: blur(250px)"></div>
+  <div style="width: 409px; left: 435px; top: 164.09px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: center; gap: 48px; display: inline-flex">
+    <div style="width: 21px; height: 21px; background: #160211"></div>
+    <div style="width: 21px; height: 21px; background: #160211"></div>
+    <div style="width: 21px; height: 21px; background: #160211"></div>
+    <div style="align-self: stretch; text-align: center; color: #160211; font-size: 24px; font-family: Manrope; font-weight: 400; word-wrap: break-word">Ask our AI anything</div>
+  </div>
+  <div style="padding: 10px; left: 222px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+    <div style="width: 274px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">What can I ask you to do?</div>
+  </div>
+  <div style="width: 883px; padding: 10px; left: 222px; top: 739px; position: absolute; background: white; border-radius: 8px; outline: 1px rgba(22, 2, 17, 0.30) solid; outline-offset: -1px; justify-content: space-between; align-items: center; display: inline-flex">
+    <div style="width: 274px; color: #56637E; font-size: 14px; font-family: Manrope; font-weight: 400; word-wrap: break-word">Ask me anything about your projects</div>
+    <div style="width: 36px; height: 36px; position: relative; overflow: hidden">
+      <div style="width: 34.90px; height: 34.89px; left: 0.31px; top: 0.56px; position: absolute; background: rgba(69.31, 98.13, 135.82, 0.50)"></div>
     </div>
-    <!-- Main Chat Area -->
-    <div class="chat-main">
-      <div class="chat-header">
-        <h1>
-          <i class="fas fa-robot"></i> SaraswatiGPT
-        </h1>
-        <p>Made by Saraswati Technologies Ltd. by Shaurya Wadekar <sup>™️ © 2025</sup></p>
-      </div>
-      <div class="chat-area" id="chatArea">
-        <!-- Example Chat -->
-        <div class="msg user"><div class="bubble"><i class="fas fa-user"></i> Hi!</div></div>
-        <div class="msg bot"><div class="bubble"><i class="fas fa-robot"></i> Hi! How can I help you?</div></div>
-      </div>
-      <!-- Input bar -->
-      <form class="input-bar" autocomplete="off">
-        <button class="icon-btn" title="Add Picture" type="button"><i class="fas fa-image"></i></button>
-       
+  </div>
+  <div style="padding: 10px; left: 530px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+    <div style="width: 274px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">Which one of my projects is performing the best?</div>
+  </div>
+  <div style="height: 56px; padding: 10px; left: 838px; top: 645px; position: absolute; background: rgba(255, 255, 255, 0.50); border-radius: 8px; outline: 1px white solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+    <div style="width: 247px; color: #160211; font-size: 14px; font-family: DM Sans; font-weight: 400; word-wrap: break-word">What projects should I be concerned about right now?</div>
+  </div>
+  <div style="left: 232px; top: 610px; position: absolute; color: #56637E; font-size: 14px; font-family: Manrope; font-weight: 700; word-wrap: break-word">Suggestions on what to ask Our AI</div>
+</div>
+<div style="width: 36px; height: 37.83px; position: relative">
+  <div style="width: 21px; height: 21px; left: 0px; top: 16.83px; position: absolute; background: #160211"></div>
+  <div style="width: 21px; height: 21px; left: 15px; top: 7.91px; position: absolute; background: #160211"></div>
+  <div style="width: 21px; height: 21px; left: 0px; top: 0px; position: absolute; background: #160211"></div>
+</div>
