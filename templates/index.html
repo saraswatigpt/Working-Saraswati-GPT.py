@@ -7,83 +7,189 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    :root {
+      --primary: #8b93ff;
+      --dark-bg: #181a20;
+      --light-bg: #22242c;
+      --chat-bg: #23263a;
+      --orange: #ff9c40;
+      --blue: #3699ff;
+      --accent: #ff86e1;
+    }
     body {
       margin: 0;
-      background: #14161b;
+      background: var(--dark-bg);
       color: #f3f3fa;
       font-family: 'Inter', sans-serif;
+      min-height: 100vh;
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 18px 28px;
-      background-color: #1e2128;
-      color: #8b93ff;
+      background: var(--light-bg);
+      color: var(--primary);
+      position: sticky; top: 0; z-index: 50;
     }
     .brand {
-      font-size: 1.8em;
+      font-size: 1.7em;
       font-family: 'Poppins', sans-serif;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     nav {
       display: flex;
       gap: 18px;
+      transition: all .2s;
     }
     nav a {
       color: #ccc;
       text-decoration: none;
       font-weight: 500;
+      font-size: 1.08em;
+      padding: 5px 9px;
+      border-radius: 7px;
     }
-    nav a:hover {
-      color: #8b93ff;
-    }
+    nav a:hover { color: var(--orange); background: #2e3145; }
     .menu-btn {
       display: none;
+      font-size: 1.7em;
+      cursor: pointer;
+      margin-left: 10px;
     }
+    /* Hamburger menu for mobile */
+    #sideMenu {
+      display: none;
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 240px;
+      background: var(--light-bg);
+      color: #fff;
+      padding: 30px 18px;
+      z-index: 100;
+      box-shadow: 2px 0 18px #0003;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn .2s;
+    }
+    #sideMenu.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; left: -240px; } to { opacity: 1; left: 0; } }
+
     main {
       max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
+      margin: 20px auto 0 auto;
+      padding: 20px 10px 10px 10px;
+      border-radius: 18px;
     }
     .chat-box {
-      background: #23263a;
-      border-radius: 10px;
-      padding: 20px;
-      min-height: 300px;
-      margin-bottom: 30px;
+      background: var(--chat-bg);
+      border-radius: 12px;
+      padding: 24px 14px 20px 14px;
+      min-height: 280px;
+      margin-bottom: 26px;
+      box-shadow: 0 6px 20px #0002;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .bubble {
+      background: var(--primary);
+      color: #191d2c;
+      padding: 10px 15px;
+      margin: 12px 0;
+      border-radius: 12px 12px 4px 12px;
+      max-width: 80%;
+      display: inline-block;
+      font-size: 1.1em;
+      font-family: 'Inter',sans-serif;
+    }
+    .bubble.bot {
+      background: var(--accent);
+      color: #1b1220;
+      border-radius: 12px 12px 12px 4px;
     }
     .input-area {
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 15px;
+      align-items: center;
     }
     .input-area input {
       flex: 1;
-      padding: 12px;
-      border-radius: 6px;
+      padding: 13px 13px;
+      border-radius: 7px;
       border: none;
       background: #2e3145;
       color: white;
-      font-size: 1em;
+      font-size: 1.08em;
     }
     .input-area button {
-      padding: 12px 20px;
-      background: #8b93ff;
+      padding: 13px 18px;
+      background: var(--orange);
       border: none;
-      color: black;
-      font-weight: bold;
+      color: #fff;
+      font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
+      transition: background .16s;
+    }
+    .input-area .voice-btn {
+      background: var(--blue);
+      color: #fff;
+      font-size: 1.4em;
+      border-radius: 50%;
+      width: 42px; height: 42px;
+      display: flex;
+      align-items: center; justify-content: center;
+      border: none;
+      transition: background .17s;
+    }
+    .input-area .voice-btn.active { background: var(--accent); color: #1b1220;}
+    .input-area button:hover { background: #f37e1a; }
+    .plans-table, .boosters-table {
+      width: 100%;
+      margin: 32px 0 20px 0;
+      border-collapse: collapse;
+      background: #24253b;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px #0002;
+      font-size: 1em;
+    }
+    .plans-table th, .plans-table td, .boosters-table th, .boosters-table td {
+      border: 1px solid #23263a;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .plans-table th, .boosters-table th {
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.02em;
+    }
+    .plans-table td.plan-name {
+      color: var(--primary); font-weight: 700; font-size: 1.08em;
     }
     footer {
       text-align: center;
-      color: #777;
-      font-size: 0.9em;
-      padding: 18px 0;
+      color: #bbb;
+      font-size: 1em;
+      padding: 22px 0 8px 0;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.1em;
     }
-    @media (max-width: 768px) {
+    /* Mobile */
+    @media (max-width: 900px) {
+      main { max-width: 99vw; }
+      .plans-table, .boosters-table { font-size: .97em; }
+    }
+    @media (max-width: 700px) {
       nav { display: none; }
-      .menu-btn { display: block; font-size: 1.5em; cursor: pointer; }
+      .menu-btn { display: block; }
+      main { padding: 10px 0; }
     }
   </style>
 </head>
@@ -92,38 +198,158 @@
     <div class="brand"><i class="fa-solid fa-robot"></i> Saraswati GPT</div>
     <nav>
       <a href="#">Home</a>
-      <a href="#">Plans</a>
-      <a href="#">Booster Packs</a>
-      <a href="#">Login</a>
+      <a href="#plans">Plans</a>
+      <a href="#booster">Booster Packs</a>
+      <a href="#chat">Chat</a>
     </nav>
-    <div class="menu-btn"><i class="fas fa-bars"></i></div>
+    <div class="menu-btn" id="openMenu"><i class="fas fa-bars"></i></div>
   </header>
+
+  <!-- Hamburger menu for mobile -->
+  <div id="sideMenu">
+    <span style="font-size:1.4em;font-weight:700; margin-bottom: 18px;"><i class="fa-solid fa-robot"></i> Saraswati GPT</span>
+    <a href="#" onclick="closeMenu()">Home</a>
+    <a href="#plans" onclick="closeMenu()">Plans</a>
+    <a href="#booster" onclick="closeMenu()">Booster Packs</a>
+    <a href="#chat" onclick="closeMenu()">Chat</a>
+    <hr style="width:80%; border:0.5px solid #373f80;">
+    <div style="margin:12px 0 0 0;">
+      <b>Made by Saraswati Technologies Ltd.<br><span style="font-size:0.87em;">™️ © 2025</span></b>
+    </div>
+  </div>
 
   <main>
     <div class="chat-box" id="chat">
-      <p><strong>🤖 Saraswati GPT:</strong> Namaste! Aap kya puchhna chahte hain?</p>
+      <div class="bubble bot"><i class="fa-solid fa-robot"></i> Namaste! Aap kya puchhna chahte hain?</div>
     </div>
     <div class="input-area">
-      <input type="text" id="userInput" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
+      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" />
+      <button type="button" onclick="sendMessage()">Send</button>
+      <button type="button" class="voice-btn" id="voiceBtn" title="Voice Command">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
     </div>
+
+    <!-- Plans table -->
+    <section id="plans">
+      <h2 style="margin-top:32px;">Subscription Plans</h2>
+      <table class="plans-table">
+        <tr>
+          <th>Plan</th>
+          <th>Model(s)</th>
+          <th>Daily Limit</th>
+          <th>Price<br>(₹/month)</th>
+          <th>Target User</th>
+        </tr>
+        <tr><td class="plan-name">Free</td><td>Gemini 1.0</td><td>20</td><td>0</td><td>All, trial, viral</td></tr>
+        <tr><td class="plan-name">Lite</td><td>Gemini 1.0 Pro</td><td>60</td><td>149</td><td>Students, notes</td></tr>
+        <tr><td class="plan-name">Superfast</td><td>Gemini 1.5 Flash</td><td>100</td><td>399</td><td>Power user, chat</td></tr>
+        <tr><td class="plan-name">Advanced</td><td>1.0 Pro + 1.5 Flash</td><td>150</td><td>599</td><td>Mix users, flexible</td></tr>
+        <tr><td class="plan-name">Deep</td><td>Gemini 1.5 Pro</td><td>200</td><td>899</td><td>Coding, research</td></tr>
+        <tr><td class="plan-name">Expert</td><td>All Gemini Models</td><td>500</td><td>2,999</td><td>Teams, pro, enterprise</td></tr>
+      </table>
+    </section>
+    <!-- Booster packs -->
+    <section id="booster">
+      <h2>Booster Packs (Top-Up)</h2>
+      <table class="boosters-table">
+        <tr>
+          <th>Pack Name</th>
+          <th>Extra Messages</th>
+          <th>Price (₹)</th>
+        </tr>
+        <tr><td>Gemini Booster</td><td>100</td><td>29</td></tr>
+      </table>
+    </section>
   </main>
 
   <footer>
-    Made by Saraswati Technologies Ltd.™ © 2025
+    Made by Saraswati Technologies Ltd. <sup>™️ © 2025</sup>
   </footer>
 
   <script>
-    function sendMessage() {
+    // Hamburger menu
+    document.getElementById('openMenu').onclick = () => {
+      document.getElementById('sideMenu').classList.add('active');
+    };
+    function closeMenu() {
+      document.getElementById('sideMenu').classList.remove('active');
+    }
+    document.body.onclick = function(e) {
+      if(e.target.id === "sideMenu" || e.target.classList.contains('menu-btn')) return;
+      document.getElementById('sideMenu').classList.remove('active');
+    };
+
+    // Chatbox logic
+    async function sendMessage() {
       const input = document.getElementById("userInput");
       const chat = document.getElementById("chat");
       const userText = input.value.trim();
-      if (userText !== "") {
-        chat.innerHTML += `<p><strong>🧑 You:</strong> ${userText}</p>`;
-        chat.innerHTML += `<p><strong>🤖 Saraswati GPT:</strong> [Bot reply here]</p>`;
-        input.value = "";
-        chat.scrollTop = chat.scrollHeight;
+      if (userText === "") return;
+      // User bubble
+      chat.innerHTML += `<div class="bubble">${userText}</div>`;
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+      // API call to backend (Flask)
+      const botBubble = document.createElement("div");
+      botBubble.className = "bubble bot";
+      botBubble.innerHTML = `<i class="fa-solid fa-robot"></i> ...soch raha hoon...`;
+      chat.appendChild(botBubble);
+      chat.scrollTop = chat.scrollHeight;
+
+      // Call Flask backend
+      let reply = "";
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userText })
+        });
+        const data = await res.json();
+        reply = data.reply;
+      } catch (e) {
+        reply = "Bot se connect nahi ho paya. (Server down ya deploy karo!)";
       }
+      botBubble.innerHTML = `<i class="fa-solid fa-robot"></i> ${reply}`;
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Enter key support
+    document.getElementById("userInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Voice command (Web Speech API, Chrome/Edge/Android supported)
+    let recognizing = false;
+    let recognition;
+    const voiceBtn = document.getElementById("voiceBtn");
+    if ("webkitSpeechRecognition" in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-IN";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("userInput").value = transcript;
+        sendMessage();
+      };
+      recognition.onend = function() {
+        recognizing = false;
+        voiceBtn.classList.remove("active");
+      };
+      voiceBtn.onclick = function() {
+        if (recognizing) {
+          recognition.stop();
+          recognizing = false;
+          voiceBtn.classList.remove("active");
+        } else {
+          recognition.start();
+          recognizing = true;
+          voiceBtn.classList.add("active");
+        }
+      };
+    } else {
+      voiceBtn.style.display = "none";
     }
   </script>
 </body>
