@@ -6,126 +6,114 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    /* Your styles go here (same as before) */
+    body { margin: 0; background: #f3f8ff; color: #181d32; font-family: 'Inter', sans-serif; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 16px 30px; background: #2588fd; color: #fff; box-shadow: 0 4px 18px #0001; }
+    .brand { font-size: 1.7em; font-family: 'Poppins', sans-serif; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    nav { display: flex; gap: 28px; font-size: 1.13em; align-items: center; }
+    nav a { color: #e2edff; text-decoration: none; font-weight: 500; }
+    nav a:hover { color: #ffe266; }
+    .menu-btn { font-size: 1.8em; cursor: pointer; display: none; }
+    main { max-width: 900px; margin: auto; padding: 40px 20px; }
+    .chat-box { background: #fff; border-radius: 10px; padding: 20px; min-height: 300px; margin-bottom: 30px; box-shadow: 0 2px 6px #ccc; }
+    .input-area { display: flex; gap: 10px; }
+    .input-area input { flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1em; }
+    .input-area button { padding: 12px 20px; background: #2588fd; border: none; color: white; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .plans-section { margin-top: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; border: 1px solid #ccc; text-align: center; }
+    th { background-color: #f0f4ff; }
+    footer { text-align: center; color: #6767a0; font-size: .95em; padding: 20px 0; }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand"><i class="fa-solid fa-robot"></i> Saraswati GPT <span>™️ ©</span></div>
+    <div class="brand"><i class="fa-solid fa-robot"></i> Saraswati GPT</div>
     <nav>
-      <a href="#" class="active">Home</a>
-      <a href="#" id="plansBtn">Plans</a>
-      <a href="#">Booster Packs</a>
-      <a href="#">Login</a>
+      <a href="#">Home</a>
+      <a href="#plans">Plans</a>
+      <a href="#login">Login</a>
     </nav>
     <div class="menu-btn"><i class="fas fa-bars"></i></div>
-  </header>  <!-- Hamburger & Plans popup remain unchanged -->  <main>
-    <section class="home-section" id="homeSection">
-      <h1>Welcome To Saraswati GPT</h1>
-      <p>
-        India’s Most Advanced AI Chatbot Platform.<br>
-        Made by Saraswati Technologies Ltd.<br>
-        <span class="credit2">Made By Shaurya Wadekar – A 10 Year Old.</span>
-      </p>
-      <button class="get-started-btn" onclick="showChat()">Start Chatting Now</button>
-      <div class="credit">™️ © 2025</div>
-    </section>
-    <section class="chat-section" id="chatSection">
-      <div class="chat-title-bar">
-        <div class="chat-title">Saraswati GPT</div>
-        <select id="modelSelect" class="model-switcher"></select>
-      </div>
-      <div class="chat-box" id="chatBox"></div>
-      <div class="input-area">
-        <input type="text" id="userInput" placeholder="Type your message...">
-        <button onclick="sendMsg()">Send</button>
-      </div>
-    </section>
-  </main>  <footer>
-    Made by Saraswati Technologies Ltd. ™️ © 2025
-  </footer>  <script>
-    const hamburgerMenu = document.getElementById("hamburgerMenu");
-    document.querySelector(".menu-btn").onclick = () => {hamburgerMenu.style.display="flex";};
-    document.getElementById("hamburgerClose").onclick = () => {hamburgerMenu.style.display="none";};
-
-    function togglePlans(val){
-      document.getElementById("plansPopup").style.display = val ? "flex" : "none";
-      hamburgerMenu.style.display = "none";
-    }
-    document.getElementById("plansBtn").onclick = () => togglePlans(true);
-    document.getElementById("plansBtnMobile").onclick = () => togglePlans(true);
-
-    function showChat(){
-      document.getElementById("homeSection").style.display = "none";
-      document.getElementById("chatSection").style.display = "flex";
-      window.scrollTo(0,0);
-    }
-
-    function buyPlan(plan) {
-      alert("You selected the "+plan+" plan!\n(Payment integration coming soon...)");
-    }
-
-    let userPlan = "infinity"; // For demo, show all models
-
-    const backendModels = {
-      "Saraswati GPT Free": "gemini-1.0",
-      "Saraswati Lite": "gemini-1.0-pro",
-      "Saraswati Lightning": "gemini-1.5-flash",
-      "Saraswati Ultra": "gemini-1.5-pro",
-      "Saraswati Infinity": "all"
-    };
-
-    const planModels = {
-      "free": ["Saraswati GPT Free"],
-      "lite": ["Saraswati Lite"],
-      "lightning": ["Saraswati Lightning"],
-      "advanced": ["Saraswati Lite", "Saraswati Lightning"],
-      "ultra": ["Saraswati Ultra"],
-      "infinity": ["Saraswati GPT Free", "Saraswati Lite", "Saraswati Lightning", "Saraswati Ultra", "Saraswati Infinity"]
-    };
-
-    let currentModel = planModels[userPlan][0];
-
-    function setModelDropdown() {
-      const select = document.getElementById("modelSelect");
-      select.innerHTML = "";
-      planModels[userPlan].forEach(modelName => {
-        const opt = document.createElement("option");
-        opt.value = modelName;
-        opt.textContent = modelName;
-        select.appendChild(opt);
-      });
-      select.value = currentModel;
-      select.onchange = () => {
-        currentModel = select.value;
-        const realModel = backendModels[currentModel];
-        alert("Switched to: " + currentModel + "\n(Backend uses: " + realModel + ")");
-      };
-    }
-    window.onload = setModelDropdown;
-
-    const chatBox = document.getElementById("chatBox");
-    function sendMsg() {
+  </header>
+  <main>
+    <div class="chat-box" id="chat">
+      <p><strong>🤖 Saraswati GPT:</strong> Namaste! Aap kya puchhna chahte hain?</p>
+    </div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    <div class="plans-section" id="plans">
+      <h2>Plans & Pricing</h2>
+      <table>
+        <tr>
+          <th>Plan</th>
+          <th>Daily Limit</th>
+          <th>Image Generation</th>
+          <th>Model</th>
+          <th>Price</th>
+        </tr>
+        <tr>
+          <td>Saraswati GPT Free</td>
+          <td>10</td>
+          <td>2</td>
+          <td>1.0 (Saraswati GPT Free)</td>
+          <td>₹0</td>
+        </tr>
+        <tr>
+          <td>Saraswati Lite</td>
+          <td>30</td>
+          <td>5</td>
+          <td>1.0 Pro (Saraswati Lite)</td>
+          <td>₹149/mo</td>
+        </tr>
+        <tr>
+          <td>Saraswati Lightning</td>
+          <td>60</td>
+          <td>15</td>
+          <td>1.5 Flash (Saraswati Lightning)</td>
+          <td>₹399/mo</td>
+        </tr>
+        <tr>
+          <td>Advanced</td>
+          <td>90</td>
+          <td>25</td>
+          <td>1.0 Pro, 1.5 Flash (Switchable)</td>
+          <td>₹599/mo</td>
+        </tr>
+        <tr>
+          <td>Saraswati Ultra</td>
+          <td>140</td>
+          <td>40</td>
+          <td>1.5 Pro (Saraswati Ultra)</td>
+          <td>₹899/mo</td>
+        </tr>
+        <tr>
+          <td>Saraswati Infinity</td>
+          <td>400</td>
+          <td>100</td>
+          <td>All Models (Switchable)</td>
+          <td>₹2999/mo</td>
+        </tr>
+      </table>
+    </div>
+  </main>
+  <footer>
+    Made by Saraswati Technologies Ltd.™ © 2025<br>
+    <strong>Made By Shaurya Wadekar – A 10 Year Old.</strong>
+  </footer>
+  <script>
+    function sendMessage() {
       const input = document.getElementById("userInput");
-      const text = input.value.trim();
-      if (!text) return;
-      addMsg("user", text);
-      input.value = "";
-      setTimeout(() => {
-        addMsg("bot", demoReply(text));
-      }, 500);
+      const chat = document.getElementById("chat");
+      const userText = input.value.trim();
+      if (userText !== "") {
+        chat.innerHTML += `<p><strong>🧑 You:</strong> ${userText}</p>`;
+        chat.innerHTML += `<p><strong>🤖 Saraswati GPT:</strong> [Bot reply here]</p>`;
+        input.value = "";
+        chat.scrollTop = chat.scrollHeight;
+      }
     }
-    function addMsg(role, text) {
-      let div = document.createElement("div");
-      div.className = "msg " + role;
-      div.innerHTML = `<span class="bubble">${text}</span>`;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-    function demoReply(q) {
-      if (currentModel === "Saraswati Lightning") return "⚡ Lightning fast: " + q.split("").reverse().join("");
-      if (currentModel === "Saraswati Ultra") return "🔍 Deep analysis of: " + q;
-      return "🤖 Response: " + q;
-    }
-  </script></body>
+  </script>
+</body>
 </html>
