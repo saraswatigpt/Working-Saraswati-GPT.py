@@ -6,130 +6,106 @@
   <title>Saraswati GPT</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style
-    body { margin: 0; background: #f3f8ff; color: #181d32; font-family: 'Inter', sans-serif;}
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f3f8ff; color: #181d32; }
+
     header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 30px 16px 18px; background: #2588fd; color: #fff;
-      box-shadow: 0 4px 18px #0001;
+      background: #2588fd; color: white; padding: 14px 24px;
+      box-shadow: 0 3px 10px #0001;
     }
-    .brand { font-size: 1.7em; font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing:1.2px; display:flex; align-items:center; gap:10px;}
-    .brand span {font-size:.47em; color:#ffb636; font-family:'Inter',sans-serif;}
-    .menu-btn { font-size: 1.8em; cursor: pointer; display: none; }
-    nav {
-      display: flex; gap: 28px; font-size:1.13em;
-      align-items: center;
-    }
+    .brand { font-family: 'Poppins', sans-serif; font-size: 1.8em; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    .brand span { font-size: 0.5em; color: #ffb636; }
+
+    nav { display: flex; gap: 20px; align-items: center; }
     nav a {
-      color: #e2edff;
-      text-decoration: none;
-      font-weight: 500;
-      position:relative;
+      color: white; text-decoration: none; font-weight: 500;
+      border-bottom: 2px solid transparent; transition: 0.2s;
     }
-    nav a.active, nav a:hover { color: #ffe266; }
-    nav a.active:after {
-      content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
-      height: 2.5px; background: #ffb636; border-radius:2px;
-    }
-    .plans-popup {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(24,29,50,.19); justify-content: center; align-items: flex-start; z-index:99;
-    }
-    .plans-content {
-      margin-top: 70px;
-      background: #fff; color: #181d32; border-radius: 16px; min-width:320px; max-width:530px;
-      box-shadow:0 10px 50px #0002; padding: 28px 14px 24px 14px;
-      animation:pop .23s cubic-bezier(.76,.14,.43,1.2);
-    }
-    @keyframes pop { 0% {transform:scale(.9); opacity:0;} 100% {transform:scale(1);opacity:1;}}
-    .plans-content h2 {margin-top:0; color: #2588fd; text-align:center;}
-    .plan-table {width: 100%; border-collapse: collapse; margin: 14px 0 5px 0; font-size:0.98em;}
-    .plan-table th, .plan-table td {padding:8px 4px; text-align:left; vertical-align:top;}
-    .plan-table th {background:#f2f4fa;}
-    .plan-name {font-weight:700; color:#2588fd;}
-    .plan-desc {font-size: 0.92em; color: #6b7087; margin-top:2px;}
-    .plan-buy-btn {
-      background: #2588fd; color: #fff; border: none; border-radius: 8px;
-      padding: 6px 17px; font-weight: 600; cursor: pointer; font-size:1em;
-      margin-left: 2px; margin-top: 2px; transition: background .17s;
-    }
-    .plan-buy-btn:hover {background: #ffb636; color: #181d32;}
-    .close-btn {
-      background:#ffb636; border:none; color:#181d32;
-      font-size:1.04em; font-weight:600; border-radius:6px;
-      padding:5px 15px; float:right; cursor:pointer; margin-top:2px;
-    }
-    main {max-width: 700px; margin:36px auto 0 auto; background: #fff; border-radius:16px; box-shadow:0 6px 28px #b5cfff22; min-height: 440px; padding:0;}
-    .home-section {text-align:center; padding:62px 28px 46px 28px;}
-    .home-section h1 {font-family:'Poppins',sans-serif; color:#2588fd; font-size:2.3em;}
-    .home-section p {color:#2e3345; margin-top: 10px; margin-bottom:30px; font-size:1.08em;}
-    .credit {margin-top:38px; color:#677; font-size:1em;}
-    .credit2 {margin-top:15px; font-weight:bold; color:#2588fd; font-size:1.08em;}
-    .chat-section {display:none; flex-direction:column;}
-    .chat-title-bar {
-      display:flex; justify-content:space-between; align-items:center; padding:28px 26px 8px 26px;
-    }
-    .chat-title {font-family:'Poppins',sans-serif; font-size:1.7em; font-weight:600; color:#2588fd;}
-    .model-switcher {
-      font-size:1em; padding:7px 13px; border-radius:8px;
-      border:1.7px solid #2588fd; background:#f4f8fe; color:#2588fd;
-      font-family:'Inter',sans-serif; font-weight:600; cursor:pointer; outline:none;
-    }
-    .chat-box {
-      background: #f3f8ff; border-radius: 12px; padding:24px 20px; min-height:280px; margin:0 28px 25px 28px;
-      box-shadow:0 2px 7px #2588fd22; overflow-y:auto; max-height:340px;
-    }
-    .msg {margin-bottom: 14px;}
-    .msg.user {text-align:right;}
-    .msg .bubble {
-      display:inline-block; padding:11px 17px; border-radius:12px 11px 18px 6px;
-      font-size:1.08em; margin-bottom:3px; font-weight:500; background:#f3e6ff; color:#5d2072;}
-    .msg.bot {text-align:left;}
-    .msg.bot .bubble {background:#dbefff; color:#2588fd;}
-    .input-area {display:flex;gap:11px;align-items:center;margin:0 28px 23px 28px;}
-    .input-area input {flex:1; padding:13px 14px; border-radius:8px; border:1.3px solid #b8d9ff; font-size:1.09em;}
-    .input-area button {
-      background:#2588fd; color:#fff; border:none; padding:13px 20px;
-      border-radius:8px; font-size:1.09em; font-weight:600; cursor:pointer;
-    }
-    .input-area button:hover {background:#ffb636; color:#181d32;}
-    footer {text-align:center; color:#6767a0; font-size:.99em; padding:17px 0; margin-top:50px;}
-    /* Hamburger Responsive */
-    @media (max-width:900px){
-      main{margin:0;}
-      header{padding:12px 13px;}
-    }
-    @media (max-width:670px){
-      main { border-radius:0;}
-      .chat-box, .input-area, .chat-title-bar {margin:0 3vw;}
-    }
-    @media (max-width:600px){
-      .brand{font-size:1.17em;}
-      .chat-title{font-size:1.11em;}
-    }
-    @media (max-width:520px){
-      .chat-title-bar{flex-direction:column;gap:7px;}
-    }
+    nav a:hover { border-bottom: 2px solid #ffb636; }
+
+    .menu-btn { font-size: 1.8em; display: none; cursor: pointer; }
+
     .hamburger-menu {
-      display:none; position:fixed; top:0; left:0; width:100vw; height:100vh;
-      background:rgba(30,33,40,.91); z-index: 999;
-      flex-direction:column; align-items:flex-end; padding:0;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 99; justify-content: flex-end;
     }
     .hamburger-content {
-      background: #fff; color:#181d32; border-radius:0 0 18px 0;
-      min-width:230px; box-shadow:0 10px 34px #0002; padding:35px 16px 22px 22px;
-      margin-top:0; min-height:250px;
+      background: white; padding: 30px 20px; min-width: 200px;
     }
     .hamburger-content a {
-      display:block; color:#2588fd; text-decoration:none; font-size:1.13em; margin-bottom:22px;
-      font-weight:500; letter-spacing:1px;
+      display: block; margin-bottom: 18px; color: #2588fd;
+      font-size: 1.1em; text-decoration: none; font-weight: 600;
     }
-    .hamburger-content a:hover {color:#ffb636;}
-    .hamburger-close {
-      font-size:2.2em; color:#ffb636; margin:13px 19px 0 0; cursor:pointer; font-weight:900;
+
+    .plans-popup {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3); z-index: 999;
+      justify-content: center; align-items: flex-start;
     }
-    .feature-list {
-      list-style: disc inside; margin:4px 0 0 0; padding:0; font-size:0.93em; color:#495;
+    .plans-content {
+      background: white; padding: 24px; margin-top: 60px;
+      border-radius: 12px; max-width: 500px; width: 90%;
+    }
+    .plans-content h2 { text-align: center; color: #2588fd; margin-bottom: 20px; }
+    .plan-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+    .plan-table th, .plan-table td { padding: 8px; text-align: left; }
+    .plan-table th { background: #f0f0ff; }
+    .plan-buy-btn {
+      background: #2588fd; color: white; padding: 6px 12px;
+      border: none; border-radius: 6px; cursor: pointer;
+    }
+    .plan-buy-btn:hover { background: #ffb636; color: #181d32; }
+    .close-btn {
+      float: right; background: #ffb636; color: black;
+      border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer;
+    }
+
+    .home { text-align: center; padding: 60px 20px; }
+    .home h1 { color: #2588fd; font-size: 2.2em; margin-bottom: 12px; }
+    .home p { font-size: 1.1em; margin-bottom: 20px; }
+    .home .credit { margin-top: 30px; color: #555; }
+    .get-started-btn {
+      background: #2588fd; color: white; padding: 12px 20px;
+      border: none; border-radius: 8px; font-size: 1.1em;
+      cursor: pointer;
+    }
+    .get-started-btn:hover { background: #ffb636; color: #181d32; }
+
+    .chat-section { display: none; flex-direction: column; padding: 30px 20px; }
+    .chat-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+    }
+    .chat-box {
+      background: #eef4ff; padding: 18px; border-radius: 10px;
+      min-height: 300px; max-height: 400px; overflow-y: auto; margin-bottom: 14px;
+    }
+    .msg { margin-bottom: 12px; }
+    .msg .bubble {
+      display: inline-block; padding: 10px 16px; border-radius: 12px;
+      background: #f3e6ff; color: #5d2072;
+    }
+    .msg.bot .bubble { background: #dbefff; color: #2588fd; }
+
+    .input-area {
+      display: flex; gap: 10px;
+    }
+    .input-area input {
+      flex: 1; padding: 12px; border-radius: 6px;
+      border: 1px solid #ccc; font-size: 1em;
+    }
+    .input-area button {
+      background: #2588fd; color: white; padding: 12px 18px;
+      border: none; border-radius: 6px; cursor: pointer;
+    }
+
+    footer { text-align: center; font-size: 0.9em; padding: 20px 0; color: #666; }
+    select { padding: 6px 12px; border-radius: 6px; border: 1px solid #2588fd; font-weight: 600; color: #2588fd; }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .menu-btn { display: block; }
     }
   </style>
 </head>
@@ -139,190 +115,134 @@
     <nav>
       <a href="#" class="active">Home</a>
       <a href="#" id="plansBtn">Plans</a>
-      <a href="#">Booster Packs</a>
       <a href="#">Login</a>
     </nav>
-    <div class="menu-btn"><i class="fas fa-bars"></i></div>
+    <div class="menu-btn" onclick="openMenu()"><i class="fas fa-bars"></i></div>
   </header>
 
-  <!-- Hamburger (mobile) -->
+  <!-- Hamburger -->
   <div class="hamburger-menu" id="hamburgerMenu">
-    <div class="hamburger-close" id="hamburgerClose">&times;</div>
     <div class="hamburger-content">
-      <a href="#">Home</a>
-      <a href="#" id="plansBtnMobile">Plans</a>
-      <a href="#">Booster Packs</a>
+      <a href="#" onclick="showHome()">Home</a>
+      <a href="#" onclick="showPlans()">Plans</a>
       <a href="#">Login</a>
     </div>
   </div>
 
-  <!-- Plans Popup -->
+  <!-- Plans -->
   <div class="plans-popup" id="plansPopup">
     <div class="plans-content">
       <button class="close-btn" onclick="togglePlans(false)">Close</button>
       <h2>Plans & Pricing</h2>
       <table class="plan-table">
-        <tr>
-          <th>Plan</th>
-          <th>Features</th>
-          <th>Daily Limit</th>
-          <th>Model(s)</th>
-          <th>Price</th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Saraswati GPT Free</div>
-            <div class="plan-desc">A Demo For New Users To Test Our App</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>Basic Chat</li>
-              <li>Limited to Free Model</li>
-            </ul>
-          </td>
-          <td>10</td>
-          <td>1.0</td>
-          <td>₹0</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Free')">Buy Now</button></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Saraswati Lite</div>
-            <div class="plan-desc">Enhance Your Experience with Saraswati Lite</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>More Messages</li>
-              <li>Priority Access</li>
-              <li>Model: Saraswati Lite (1.0 Pro)</li>
-            </ul>
-          </td>
-          <td>30</td>
-          <td>1.0 Pro</td>
-          <td>₹149/mo</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Lite')">Buy Now</button></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Saraswati Lightning</div>
-            <div class="plan-desc">Perfect For Daily Tasks With Saraswati Lightning For Quick Answers</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>Superfast Responses</li>
-              <li>High Limits</li>
-              <li>Model: Saraswati Lightning (1.5 Flash)</li>
-            </ul>
-          </td>
-          <td>60</td>
-          <td>1.5 Flash</td>
-          <td>₹399/mo</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Lightning')">Buy Now</button></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Advanced</div>
-            <div class="plan-desc">Switch between Saraswati Lite & Lightning models</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>Switch between Lite & Lightning Models</li>
-              <li>Extra Limits</li>
-              <li>Best for Power Users</li>
-            </ul>
-          </td>
-          <td>90</td>
-          <td>1.0 Pro, 1.5 Flash</td>
-          <td>₹599/mo</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Advanced')">Buy Now</button></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Saraswati Ultra</div>
-            <div class="plan-desc">Experience Deep Research & Most Accurate Answers</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>Deep Research</li>
-              <li>Ultra Accuracy</li>
-              <li>Model: Saraswati Ultra (1.5 Pro)</li>
-            </ul>
-          </td>
-          <td>140</td>
-          <td>1.5 Pro</td>
-          <td>₹899/mo</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Ultra')">Buy Now</button></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="plan-name">Saraswati Infinity</div>
-            <div class="plan-desc">Absolute Infinity. Any Model + Priority Support</div>
-          </td>
-          <td>
-            <ul class="feature-list">
-              <li>All Models</li>
-              <li>Highest Daily Limit</li>
-              <li>Priority Customer Support</li>
-              <li>Switch Models Anytime</li>
-            </ul>
-          </td>
-          <td>400</td>
-          <td>All Models</td>
-          <td>₹2999/mo</td>
-          <td><button class="plan-buy-btn" onclick="buyPlan('Infinity')">Buy Now</button></td>
-        </tr>
+        <tr><th>Plan</th><th>Limit</th><th>Model(s)</th><th>Price</th><th></th></tr>
+        <tr><td>Free</td><td>10</td><td>1.0</td><td>₹0</td><td><button class="plan-buy-btn">Buy</button></td></tr>
+        <tr><td>Lite</td><td>30</td><td>1.0 Pro</td><td>₹149</td><td><button class="plan-buy-btn">Buy</button></td></tr>
+        <tr><td>Lightning</td><td>60</td><td>1.5 Flash</td><td>₹399</td><td><button class="plan-buy-btn">Buy</button></td></tr>
+        <tr><td>Advanced</td><td>90</td><td>Lite + Lightning</td><td>₹599</td><td><button class="plan-buy-btn">Buy</button></td></tr>
+        <tr><td>Ultra</td><td>140</td><td>1.5 Pro</td><td>₹899</td><td><button class="plan-buy-btn">Buy</button></td></tr>
+        <tr><td>Infinity</td><td>400</td><td>All Models</td><td>₹2999</td><td><button class="plan-buy-btn">Buy</button></td></tr>
       </table>
+      <ul style="font-size: 0.95em; margin-top: 10px;">
+        <li><b>Free:</b> A Demo For New Users</li>
+        <li><b>Lite:</b> Saraswati Lite Model</li>
+        <li><b>Lightning:</b> Superfast Daily Tasks</li>
+        <li><b>Advanced:</b> Switch Between Lite & Lightning</li>
+        <li><b>Ultra:</b> Deep Research with Saraswati Ultra</li>
+        <li><b>Infinity:</b> Use Any Model with Priority</li>
+      </ul>
     </div>
   </div>
 
   <main>
-    <section class="home-section" id="homeSection">
+    <section class="home" id="homePage">
       <h1>Welcome To Saraswati GPT</h1>
-      <p>
-        India’s Most Advanced AI Chatbot Platform.<br>
-        Made by Saraswati Technologies Ltd.<br>
-        <span class="credit2">Made By Shaurya Wadekar – A 10 Year Old.</span>
-      </p>
-      <button class="get-started-btn" onclick="showChat()">Start Chatting Now</button>
-      <div class="credit">™️ © 2025</div>
+      <p>Made by Saraswati Technologies Ltd.<br><b>Made By Shaurya Wadekar – A 10 Year Old.</b></p>
+      <button class="get-started-btn" onclick="startChat()">Start Chatting Now</button>
+      <div class="credit">© 2025</div>
     </section>
-    <section class="chat-section" id="chatSection">
-      <div class="chat-title-bar">
-        <div class="chat-title">Saraswati GPT</div>
-        <select id="modelSelect" class="model-switcher"></select>
+
+    <section class="chat-section" id="chatPage">
+      <div class="chat-header">
+        <h2>Saraswati GPT</h2>
+        <select id="modelSelect"></select>
       </div>
       <div class="chat-box" id="chatBox"></div>
       <div class="input-area">
-        <input type="text" id="userInput" placeholder="Type your message...">
+        <input type="text" id="userInput" placeholder="Type your message..." />
         <button onclick="sendMsg()">Send</button>
       </div>
     </section>
   </main>
+
   <footer>
-    Made by Saraswati Technologies Ltd. ™️ © 2025
+    Made by Saraswati Technologies Ltd.™ © 2025
   </footer>
+
   <script>
-    // ==== Hamburger menu ====
-    const hamburgerMenu = document.getElementById("hamburgerMenu");
-    document.querySelector(".menu-btn").onclick = ()=>{hamburgerMenu.style.display="flex";}
-    document.getElementById("hamburgerClose").onclick = ()=>{hamburgerMenu.style.display="none";}
-    // Plans popup both desktop+mobile
-    function togglePlans(val){
-      document.getElementById("plansPopup").style.display = val?"flex":"none";
-      hamburgerMenu.style.display="none";
+    const hamburger = document.getElementById("hamburgerMenu");
+    function openMenu() { hamburger.style.display = "flex"; }
+    function showHome() {
+      document.getElementById("homePage").style.display = "block";
+      document.getElementById("chatPage").style.display = "none";
+      hamburger.style.display = "none";
     }
-    document.getElementById("plansBtn").onclick = ()=>togglePlans(true);
-    document.getElementById("plansBtnMobile").onclick = ()=>togglePlans(true);
-    // ====== Switch Home <-> Chat ======
-    function showChat(){
-      document.getElementById("homeSection").style.display = "none";
-      document.getElementById("chatSection").style.display = "flex";
-      window.scrollTo(0,0);
+    function showPlans() {
+      togglePlans(true);
+      hamburger.style.display = "none";
     }
-    // ======= Buy Plan Button Demo ==========
-    function buyPlan(plan) {
-      alert("You selected the "+plan+" plan!\n(Payment integration coming soon...)");
+    function togglePlans(show) {
+      document.getElementById("plansPopup").style.display = show ? "flex" : "none";
     }
-    // ========= Model Switcher (Plan Wise) =========
-    let userPlan = "free"; //
+    function startChat() {
+      document.getElementById("homePage").style.display = "none";
+      document.getElementById("chatPage").style.display = "flex";
+      window.scrollTo(0, 0);
+    }
+
+    const planModels = {
+      "free": ["Saraswati GPT Free"],
+      "lite": ["Saraswati Lite"],
+      "lightning": ["Saraswati Lightning"],
+      "advanced": ["Saraswati Lite", "Saraswati Lightning"],
+      "ultra": ["Saraswati Ultra"],
+      "infinity": ["All Models"]
+    };
+    let userPlan = "free";
+    let currentModel = planModels[userPlan][0];
+    const modelSelect = document.getElementById("modelSelect");
+
+    function updateModels() {
+      modelSelect.innerHTML = "";
+      planModels[userPlan].forEach(m => {
+        let opt = document.createElement("option");
+        opt.value = m; opt.textContent = m;
+        modelSelect.appendChild(opt);
+      });
+    }
+    modelSelect.onchange = () => {
+      currentModel = modelSelect.value;
+    };
+    window.onload = () => updateModels();
+
+    const chatBox = document.getElementById("chatBox");
+    function sendMsg() {
+      const input = document.getElementById("userInput");
+      let text = input.value.trim();
+      if (!text) return;
+      addMsg("user", text);
+      input.value = "";
+      setTimeout(() => {
+        addMsg("bot", "🤖 Response (demo): " + text);
+      }, 700);
+    }
+    function addMsg(role, msg) {
+      const div = document.createElement("div");
+      div.className = "msg " + role;
+      div.innerHTML = `<span class="bubble">${msg}</span>`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
