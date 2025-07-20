@@ -6,114 +6,151 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    body { margin: 0; background: #f3f8ff; color: #181d32; font-family: 'Inter', sans-serif; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 16px 30px; background: #2588fd; color: #fff; box-shadow: 0 4px 18px #0001; }
-    .brand { font-size: 1.7em; font-family: 'Poppins', sans-serif; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-    nav { display: flex; gap: 28px; font-size: 1.13em; align-items: center; }
-    nav a { color: #e2edff; text-decoration: none; font-weight: 500; }
-    nav a:hover { color: #ffe266; }
+    body { margin: 0; background: #f3f8ff; color: #181d32; font-family: 'Inter', sans-serif;}
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 30px 16px 18px; background: #2588fd; color: #fff;
+      box-shadow: 0 4px 18px #0001;
+    }
+    .brand { font-size: 1.7em; font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing:1.2px; display:flex; align-items:center; gap:10px;}
+    .brand span {font-size:.47em; color:#ffb636; font-family:'Inter',sans-serif;}
     .menu-btn { font-size: 1.8em; cursor: pointer; display: none; }
-    main { max-width: 900px; margin: auto; padding: 40px 20px; }
-    .chat-box { background: #fff; border-radius: 10px; padding: 20px; min-height: 300px; margin-bottom: 30px; box-shadow: 0 2px 6px #ccc; }
-    .input-area { display: flex; gap: 10px; }
-    .input-area input { flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1em; }
-    .input-area button { padding: 12px 20px; background: #2588fd; border: none; color: white; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    .plans-section { margin-top: 40px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 12px; border: 1px solid #ccc; text-align: center; }
-    th { background-color: #f0f4ff; }
-    footer { text-align: center; color: #6767a0; font-size: .95em; padding: 20px 0; }
+    nav {
+      display: flex; gap: 28px; font-size:1.13em;
+      align-items: center;
+    }
+    nav a {
+      color: #e2edff;
+      text-decoration: none;
+      font-weight: 500;
+      position:relative;
+    }
+    nav a.active, nav a:hover { color: #ffe266; }
+    nav a.active:after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
+      height: 2.5px; background: #ffb636; border-radius:2px;
+    }
+    .plans-popup {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(24,29,50,.19); justify-content: center; align-items: flex-start; z-index:99;
+    }
+    .plans-content {
+      margin-top: 70px;
+      background: #fff; color: #181d32; border-radius: 16px; min-width:320px; max-width:450px;
+      box-shadow:0 10px 50px #0002; padding: 28px 18px 24px 18px;
+      animation:pop .23s cubic-bezier(.76,.14,.43,1.2);
+    }
+    @keyframes pop { 0% {transform:scale(.9); opacity:0;} 100% {transform:scale(1);opacity:1;}}
+    .plans-content h2 {margin-top:0; color: #2588fd; text-align:center;}
+    .plan-table {width: 100%; border-collapse: collapse; margin: 16px 0;}
+    .plan-table th, .plan-table td {padding:8px 4px; text-align:left;}
+    .plan-table th {background:#f2f4fa;}
+    .plan-buy-btn {
+      background: #2588fd; color: #fff; border: none; border-radius: 8px;
+      padding: 6px 17px; font-weight: 600; cursor: pointer; font-size:1em;
+      margin-left: 8px; margin-top: 2px; transition: background .17s;
+    }
+    .plan-buy-btn:hover {background: #ffb636; color: #181d32;}
+    .close-btn {
+      background:#ffb636; border:none; color:#181d32;
+      font-size:1.04em; font-weight:600; border-radius:6px;
+      padding:5px 15px; float:right; cursor:pointer; margin-top:2px;
+    }
+    main {max-width: 700px; margin:36px auto 0 auto; background: #fff; border-radius:16px; box-shadow:0 6px 28px #b5cfff22; min-height: 440px; padding:0;}
+    .home-section {text-align:center; padding:62px 28px 46px 28px;}
+    .home-section h1 {font-family:'Poppins',sans-serif; color:#2588fd; font-size:2.3em;}
+    .home-section p {color:#2e3345; margin-top: 10px; margin-bottom:30px; font-size:1.08em;}
+    .credit2 {margin-top:15px; font-weight:bold; color:#2588fd; font-size:1.08em;}
+    .chat-section {display:none; flex-direction:column;}
+    .chat-title-bar {
+      display:flex; justify-content:space-between; align-items:center; padding:28px 26px 8px 26px;
+    }
+    .chat-title {font-family:'Poppins',sans-serif; font-size:1.7em; font-weight:600; color:#2588fd;}
+    .model-switcher {
+      font-size:1em; padding:7px 13px; border-radius:8px;
+      border:1.7px solid #2588fd; background:#f4f8fe; color:#2588fd;
+      font-family:'Inter',sans-serif; font-weight:600; cursor:pointer; outline:none;
+    }
+    .chat-box {
+      background: #f3f8ff; border-radius: 12px; padding:24px 20px; min-height:280px; margin:0 28px 25px 28px;
+      box-shadow:0 2px 7px #2588fd22; overflow-y:auto; max-height:340px;
+    }
+    .msg {margin-bottom: 14px;}
+    .msg.user {text-align:right;}
+    .msg .bubble {
+      display:inline-block; padding:11px 17px; border-radius:12px 11px 18px 6px;
+      font-size:1.08em; margin-bottom:3px; font-weight:500; background:#f3e6ff; color:#5d2072;}
+    .msg.bot {text-align:left;}
+    .msg.bot .bubble {background:#dbefff; color:#2588fd;}
+    .input-area {display:flex;gap:11px;align-items:center;margin:0 28px 23px 28px;}
+    .input-area input {flex:1; padding:13px 14px; border-radius:8px; border:1.3px solid #b8d9ff; font-size:1.09em;}
+    .input-area button {
+      background:#2588fd; color:#fff; border:none; padding:13px 20px;
+      border-radius:8px; font-size:1.09em; font-weight:600; cursor:pointer;
+    }
+    .input-area button:hover {background:#ffb636; color:#181d32;}
+    footer {text-align:center; color:#6767a0; font-size:.99em; padding:17px 0; margin-top:50px;}
+    @media (max-width:670px){
+      .chat-box, .input-area, .chat-title-bar {margin:0 3vw;}
+    }
+    .hamburger-menu {
+      display:none; position:fixed; top:0; left:0; width:100vw; height:100vh;
+      background:rgba(30,33,40,.91); z-index: 999;
+      flex-direction:column; align-items:flex-end; padding:0;
+    }
+    .hamburger-content {
+      background: #fff; color:#181d32; border-radius:0 0 18px 0;
+      min-width:230px; box-shadow:0 10px 34px #0002; padding:35px 16px 22px 22px;
+      margin-top:0; min-height:250px;
+    }
+    .hamburger-content a {
+      display:block; color:#2588fd; text-decoration:none; font-size:1.13em; margin-bottom:22px;
+      font-weight:500; letter-spacing:1px;
+    }
+    .hamburger-content a:hover {color:#ffb636;}
+    .hamburger-close {
+      font-size:2.2em; color:#ffb636; margin:13px 19px 0 0; cursor:pointer; font-weight:900;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand"><i class="fa-solid fa-robot"></i> Saraswati GPT</div>
+    <div class="brand"><i class="fa-solid fa-robot"></i> Saraswati GPT <span>™️ ©</span></div>
     <nav>
-      <a href="#">Home</a>
-      <a href="#plans">Plans</a>
-      <a href="#login">Login</a>
+      <a href="#" class="active">Home</a>
+      <a href="#" id="plansBtn">Plans</a>
+      <a href="#">Logout</a>
     </nav>
     <div class="menu-btn"><i class="fas fa-bars"></i></div>
   </header>
+  <div class="hamburger-menu" id="hamburgerMenu">
+    <div class="hamburger-close" id="hamburgerClose">&times;</div>
+    <div class="hamburger-content">
+      <a href="#">Home</a>
+      <a href="#" id="plansBtnMobile">Plans</a>
+      <a href="#">Logout</a>
+    </div>
+  </div>
   <main>
-    <div class="chat-box" id="chat">
-      <p><strong>🤖 Saraswati GPT:</strong> Namaste! Aap kya puchhna chahte hain?</p>
-    </div>
-    <div class="input-area">
-      <input type="text" id="userInput" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
-    <div class="plans-section" id="plans">
-      <h2>Plans & Pricing</h2>
-      <table>
-        <tr>
-          <th>Plan</th>
-          <th>Daily Limit</th>
-          <th>Image Generation</th>
-          <th>Model</th>
-          <th>Price</th>
-        </tr>
-        <tr>
-          <td>Saraswati GPT Free</td>
-          <td>10</td>
-          <td>2</td>
-          <td>1.0 (Saraswati GPT Free)</td>
-          <td>₹0</td>
-        </tr>
-        <tr>
-          <td>Saraswati Lite</td>
-          <td>30</td>
-          <td>5</td>
-          <td>1.0 Pro (Saraswati Lite)</td>
-          <td>₹149/mo</td>
-        </tr>
-        <tr>
-          <td>Saraswati Lightning</td>
-          <td>60</td>
-          <td>15</td>
-          <td>1.5 Flash (Saraswati Lightning)</td>
-          <td>₹399/mo</td>
-        </tr>
-        <tr>
-          <td>Advanced</td>
-          <td>90</td>
-          <td>25</td>
-          <td>1.0 Pro, 1.5 Flash (Switchable)</td>
-          <td>₹599/mo</td>
-        </tr>
-        <tr>
-          <td>Saraswati Ultra</td>
-          <td>140</td>
-          <td>40</td>
-          <td>1.5 Pro (Saraswati Ultra)</td>
-          <td>₹899/mo</td>
-        </tr>
-        <tr>
-          <td>Saraswati Infinity</td>
-          <td>400</td>
-          <td>100</td>
-          <td>All Models (Switchable)</td>
-          <td>₹2999/mo</td>
-        </tr>
-      </table>
-    </div>
+    <section class="home-section" id="homeSection">
+      <h1>Welcome To Saraswati GPT</h1>
+      <p>India’s Most Advanced AI Chatbot Platform.<br>Made by Saraswati Technologies Ltd.<br><span class="credit2">Made By Shaurya Wadekar – A 10 Year Old.</span></p>
+      <button class="get-started-btn" onclick="showChat()">Start Chatting Now</button>
+    </section>
+    <section class="chat-section" id="chatSection" style="display:none;">
+      <div class="chat-title-bar">
+        <div class="chat-title">Saraswati GPT</div>
+        <select id="modelSelect" class="model-switcher"></select>
+      </div>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your message...">
+        <button onclick="sendMsg()">Send</button>
+      </div>
+    </section>
   </main>
   <footer>
-    Made by Saraswati Technologies Ltd.™ © 2025<br>
-    <strong>Made By Shaurya Wadekar – A 10 Year Old.</strong>
+    Made by Saraswati Technologies Ltd. ™️ © 2025
   </footer>
-  <script>
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const chat = document.getElementById("chat");
-      const userText = input.value.trim();
-      if (userText !== "") {
-        chat.innerHTML += `<p><strong>🧑 You:</strong> ${userText}</p>`;
-        chat.innerHTML += `<p><strong>🤖 Saraswati GPT:</strong> [Bot reply here]</p>`;
-        input.value = "";
-        chat.scrollTop = chat.scrollHeight;
-      }
-    }
-  </script>
 </body>
 </html>
